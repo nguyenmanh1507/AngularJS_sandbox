@@ -1,0 +1,23 @@
+{
+  "name": "AngularJS_sandbox",
+  "homepage": "https://github.com/nguyenmanh1507/AngularJS_sandbox",
+  "authors": [
+    "nguyenmanh1507 <nguyenmanh1507@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.8",
+    "bootstrap": "~3.3.6"
+  }
+}
