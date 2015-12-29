@@ -10,6 +10,13 @@
 	<div class="container">
 		<h1>My Latest Dives</h1>
 
+		<div class="row">
+			<div class="col-sm-4">
+				<input type="search" class="form-control input-lg" placeholder="Search..." ng-model="searchKey">
+			</div>
+		</div>
+		<!-- /.row -->
+
 		<div class="row" ng-controller="diveLogCtrl">
 			<div class="col-sm-4" ng-repeat="dive in dives">
 				<h3>{{div.site}}</h3>
