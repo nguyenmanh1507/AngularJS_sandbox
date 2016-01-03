@@ -7,6 +7,8 @@
 		.controller('locationsCtrl', LocationsCtrl)
 		.controller('sitesCtrl', SitesCtrl)
 		.factory('currentSpot', CurrentSpot)
+		.directive('ywActiveMenu', ywActiveMenu)
+		.directive('ywMenuId', ywMenuId)
 		.config(function($routeProvider) {
 
 			$routeProvider.when('/locations', {
@@ -26,6 +28,53 @@
 
 		})
 	;
+
+	function ywActiveMenu(currentSpot) {
+		return function(scope, element, attrs) {
+			var activeMenuId = attrs['ywActiveMenu'],
+					activeTitle = attrs['ywActiveTitle']
+			;
+
+			currentSpot.setCurrentSpot(activeMenuId, activeTitle);
+		}
+	}
+
+	function ywMenuId(currentSpot) {
+
+		var menuElements = [];
+		
+		function setActive(element, menuId) {
+			if(currentSpot.getActiveMenu === menuId) {
+				element.addClass('active');
+			} else {
+				element.removeClass('active');
+			}
+		}
+
+		return function(scope, element, attrs) {
+
+			var menuId = attrs['ywMeuId'];
+			menuElements.push({
+				id: menuId,
+				node: element
+			});
+
+			var watcherFn = function(watchScope) {
+				return 	watchScope.$eval('getActiveMenu()');
+			};
+
+			scope.$watch(watcherFn, function(newValue, oldValue) {
+				for(var i = 0; i < menuElements.length; i++) {
+					var menuElement = menuElements[i];
+					setActive(menuElement.node, menuElement.id);
+				}
+			});
+
+			setActive(element, menuId);
+
+		}
+
+	}
 
 	function CurrentSpot() {
 		var activeMenuId = '',
@@ -60,15 +109,12 @@
 	}
 
 	function MainCtrl(currentSpot) {
-		currentSpot.setCurrentSpot('', '');
 	}
 
 	function LocationsCtrl(currentSpot) {
-		currentSpot.setCurrentSpot('Locations', 'Manage the list of diving locations');
 	}
 
 	function SitesCtrl(currentSpot) {
-		currentSpot.setCurrentSpot('Sites', 'Manage the list of dive sites');
 	}
 
 })();
