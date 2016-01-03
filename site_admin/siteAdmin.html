@@ -16,15 +16,15 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="#" class="navbar-brand" ng-click="showMain()">Younderwater Admin</a>
+			<a href="#" class="navbar-brand">Younderwater Admin</a>
 
 			<div class="collapse navbar-collapse" id="adminMenu">
 				<ul class="nav navbar-nav">
 					<li ng-class="{active: isActive('Locations')}">
-						<a href="#" ng-click="showLocations()">Locations</a>
+						<a href="#/locations">Locations</a>
 					</li>
 					<li ng-class="{active: isActive('Sites')}">
-						<a href="#" ng-click="showDiveSites()">Dive Sites</a>
+						<a href="#/sites">Dive Sites</a>
 					</li>
 				</ul>
 			</div>
@@ -37,11 +37,8 @@
 	<div class="current-spot">
 		<div class="container-fluid">
 			<div class="container">
-				<div ng-show="view=='locations'">
-					<h3>Manage the List of diving locations</h3>
-				</div>
-				<div ng-show="view=='diveSites'">
-					<h3>Manage the List of dive sites</h3>
+				<div ng-show="!isActive('')">
+					<h3>{{getTitle()}}</h3>
 				</div>
 			</div>
 			<!-- /.container -->
@@ -53,15 +50,7 @@
 	<div class="main-content">
 		<div class="container-fluid">
 			<div class="container">
-				<div ng-show="view=='main'">
-					<div ng-include="'views/main.html'"></div>
-				</div>
-				<div ng-show="view=='locations'">
-					<div ng-include="'views/locations.html'"></div>
-				</div>
-				<div ng-show="view=='diveSites'">
-					<div ng-include="'views/divesites.html'"></div>
-				</div>
+				<div ng-view></div>
 			</div>
 			<!-- /.container -->
 		</div>	
@@ -71,6 +60,7 @@
 
 
 	<script src="../bower_components/angular/angular.min.js"></script>
+	<script src="../bower_components/angular-route/angular-route.min.js"></script>
 	<script src="app.js"></script>
 </body>
 </html>

@@ -1,39 +1,74 @@
 (function(){
 	'use strict';
 
-	angular.module('maintenance', [])
+	angular.module('maintenance', ['ngRoute'])
 		.controller('adminCtrl', AdminCtrl)
+		.controller('mainCtrl', MainCtrl)
+		.controller('locationsCtrl', LocationsCtrl)
+		.controller('sitesCtrl', SitesCtrl)
+		.factory('currentSpot', CurrentSpot)
+		.config(function($routeProvider) {
+
+			$routeProvider.when('/locations', {
+				templateUrl: 'views/locations.html',
+				controller: 'locationsCtrl'
+			});
+
+			$routeProvider.when('/sites', {
+				templateUrl: 'views/divesites.html',
+				controller: 'sitesCtrl'
+			});
+
+			$routeProvider.otherwise({
+				templateUrl: 'views/main.html',
+				controller: 'mainCtrl'
+			});
+
+		})
 	;
 
-	function AdminCtrl($scope) {
-		$scope.activeMenu = '';
-		$scope.isActive = isActive;
-		$scope.showMain = showMain;
-		$scope.showLocations = showLocations;
-		$scope.showDiveSites = showDiveSites;
+	function CurrentSpot() {
+		var activeMenuId = '',
+				titleText = ''
+		;
 
-		$scope.showMain();
-
-		function setView(view, menuId) {
-			$scope.view = view;
-			$scope.activeMenu = menuId;
+		return {
+			setCurrentSpot: function(menuId, title) {
+				activeMenuId = menuId;
+				titleText = title;
+			},
+			getActiveMenu: function() {
+				return activeMenuId;
+			},
+			getTitle: function() {
+				return titleText;
+			}
 		}
+	}
+
+	function AdminCtrl($scope, currentSpot) {
+		$scope.isActive = isActive;
+		$scope.getTitle = getTitle;
 
 		function isActive(menuId) {
-			return $scope.activeMenu = menuId;
+			return currentSpot.getActiveMenu() === menuId;
 		}
 
-		function showMain() {
-			setView('main', '');
+		function getTitle() {
+			return currentSpot.getTitle();
 		}
+	}
 
-		function showLocations() {
-			setView('locations', 'Locations');
-		}
+	function MainCtrl(currentSpot) {
+		currentSpot.setCurrentSpot('', '');
+	}
 
-		function showDiveSites() {
-			setView('diveSites', 'DiveSites');
-		}
+	function LocationsCtrl(currentSpot) {
+		currentSpot.setCurrentSpot('Locations', 'Manage the list of diving locations');
+	}
+
+	function SitesCtrl(currentSpot) {
+		currentSpot.setCurrentSpot('Sites', 'Manage the list of dive sites');
 	}
 
 })();
